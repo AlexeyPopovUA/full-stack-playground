@@ -5,7 +5,7 @@ on:
     branches:
       - '**'
     paths:
-      - 'cloud/**'
+      - 'front-end/**'
       - 'package-lock.json'
 
 env:
