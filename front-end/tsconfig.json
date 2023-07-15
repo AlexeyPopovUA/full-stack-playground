@@ -1,0 +1,9 @@
+{
+  "extends": [
+    "../tsconfig.json",
+    "@tsconfig/create-react-app/tsconfig.json"
+  ],
+  "include": [
+    "src"
+  ]
+}

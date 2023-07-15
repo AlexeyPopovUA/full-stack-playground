@@ -1,0 +1,16 @@
+{
+  "name": "full-stack-playground",
+  "version": "0.1.0",
+  "scripts": {
+  },
+  "devDependencies": {
+    "@tsconfig/node18": "^18.2.0"
+  },
+  "private": true,
+  "workspaces": [
+    "./lambdas/shared/*",
+    "./lambdas/*",
+    "front-end",
+    "cloud"
+  ]
+}
