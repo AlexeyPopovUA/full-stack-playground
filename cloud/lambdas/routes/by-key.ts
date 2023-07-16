@@ -6,8 +6,7 @@ export const byKeyRouteHandler = async (req: Request<unknown, unknown, unknown, 
     environment: string;
 }>, res: Response) => {
     const environment = req.query?.environment ?? "test";
+    const record = await getRecordFromDB(environment);
 
-    const configuration = await getRecordFromDB(environment);
-
-    res.json({configuration});
+    res.json(record);
 };

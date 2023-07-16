@@ -17,8 +17,8 @@ import {S3Origin} from "aws-cdk-lib/aws-cloudfront-origins";
 import {Certificate, CertificateValidation} from "aws-cdk-lib/aws-certificatemanager";
 import {AaaaRecord, ARecord, CnameRecord, HostedZone, RecordTarget} from "aws-cdk-lib/aws-route53";
 import {CloudFrontTarget} from "aws-cdk-lib/aws-route53-targets";
-
 import {BlockPublicAccess, Bucket} from "aws-cdk-lib/aws-s3";
+
 import configuration from "../../cfg/configuration";
 
 export class FrontEndHostingStack extends Stack {
