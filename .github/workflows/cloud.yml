@@ -6,6 +6,7 @@ on:
       - '**'
     paths:
       - 'cloud/**'
+      - 'back-end/**'
       - 'package-lock.json'
 
 env:

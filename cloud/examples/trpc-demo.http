@@ -1,8 +1,26 @@
 ######
-GET https://12zt97c0lf.execute-api.us-east-1.amazonaws.com/main/trpc-demo/ping?input=INPUT
+# should pass
+GET https://12zt97c0lf.execute-api.us-east-1.amazonaws.com/main/trpc-demo/greet?input=%22INPUT%22
 
 ######
-GET https://service.fs.examples.oleksiipopov.com/trpc-demo/ping?input=INPUT
+# should fail
+GET https://service.fs.examples.oleksiipopov.com/trpc-demo/ping?input=%22INPUT%22
 
 ######
-GET https://service.fs.examples.oleksiipopov.com/trpc-demo
+# should fail
+GET https://service.fs.examples.oleksiipopov.com/trpc-demo/
+
+######
+# should pass
+GET https://service.fs.examples.oleksiipopov.com/trpc-demo/greet?input=%22INPUT%22
+
+#######
+# should pass
+OPTIONS https://service.fs.examples.oleksiipopov.com/trpc-demo/greet?batch=1&input=%7B%220%22%3A%22ReactWebApp%22%7D
+Access-Control-Request-Method: GET
+Access-Control-Request-Headers: content-type
+Referer: https://main.dev.front-end.fs.examples.oleksiipopov.com/
+Origin: https://main.dev.front-end.fs.examples.oleksiipopov.com
+
+###
+

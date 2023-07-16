@@ -1,16 +1,17 @@
 import {Construct} from 'constructs';
 import {RemovalPolicy, Stack, StackProps} from 'aws-cdk-lib';
 import {Certificate, CertificateValidation} from "aws-cdk-lib/aws-certificatemanager";
-import {ARecord, AaaaRecord, HostedZone, RecordTarget} from "aws-cdk-lib/aws-route53";
+import {AaaaRecord, ARecord, HostedZone, RecordTarget} from "aws-cdk-lib/aws-route53";
 import {AttributeType, BillingMode, Table} from "aws-cdk-lib/aws-dynamodb";
 import {HttpLambdaIntegration} from "@aws-cdk/aws-apigatewayv2-integrations-alpha";
 import {
+    CorsHttpMethod,
+    DomainName,
     HttpApi,
     HttpMethod,
     HttpStage,
-    ParameterMapping,
     MappingValue,
-    DomainName
+    ParameterMapping
 } from "@aws-cdk/aws-apigatewayv2-alpha";
 
 import {ApiGatewayv2DomainProperties} from "aws-cdk-lib/aws-route53-targets";
