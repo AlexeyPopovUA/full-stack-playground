@@ -20,6 +20,7 @@ import {DemoConstruct} from "demo/src/demo-construct";
 import {CounterConstruct} from "counter/src/counter-construct";
 
 import configuration from "../../cfg/configuration";
+import {TrpcDemoConstruct} from "trpc-demo/src/trpc-demo-construct";
 
 export class ServiceStack extends Stack {
     constructor(scope: Construct, id: string, props: StackProps) {
@@ -66,11 +67,22 @@ export class ServiceStack extends Stack {
             debug: true
         });
 
+        const lambdaTrpcDemoConstruct = new TrpcDemoConstruct(this, `${project}-trpc-demo-lambda`, {
+            name: "trpc-demo",
+            region: props.env?.region!,
+            project,
+            debug: true
+        });
+
         const lambdaCounterIntegration = new HttpLambdaIntegration(`${project}-counter-integration`, lambdaCounterConstruct.lambda, {
             parameterMapping: new ParameterMapping().overwritePath(MappingValue.requestPath())
         });
 
         const lambdaDemoIntegration = new HttpLambdaIntegration(`${project}-demo-integration`, lambdaDemoConstruct.lambda, {
+            parameterMapping: new ParameterMapping().overwritePath(MappingValue.requestPath())
+        });
+
+        const lambdaTrpcDemoIntegration = new HttpLambdaIntegration(`${project}-trpc-demo-integration`, lambdaTrpcDemoConstruct.lambda, {
             parameterMapping: new ParameterMapping().overwritePath(MappingValue.requestPath())
         });
 
@@ -88,6 +100,12 @@ export class ServiceStack extends Stack {
         apiGateway.addRoutes({
             integration: lambdaDemoIntegration,
             path: "/demo",
+            methods: [HttpMethod.GET, HttpMethod.POST, HttpMethod.OPTIONS]
+        });
+
+        apiGateway.addRoutes({
+            integration: lambdaTrpcDemoIntegration,
+            path: "/trpc-demo/{proxy+}",
             methods: [HttpMethod.GET, HttpMethod.POST, HttpMethod.OPTIONS]
         });
 

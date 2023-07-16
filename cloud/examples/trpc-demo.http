@@ -1,0 +1,8 @@
+######
+GET https://12zt97c0lf.execute-api.us-east-1.amazonaws.com/main/trpc-demo/ping?input=INPUT
+
+######
+GET https://service.fs.examples.oleksiipopov.com/trpc-demo/ping?input=INPUT
+
+######
+GET https://service.fs.examples.oleksiipopov.com/trpc-demo
