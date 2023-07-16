@@ -12,7 +12,7 @@ type CounterResponse = {
 }
 
 const fetchCounter = async (): Promise<CounterResponse> => {
-    const res = await fetch('https://service.fs.examples.oleksiipopov.com/by-key?environment=counter');
+    const res = await fetch('https://service.fs.examples.oleksiipopov.com/counter');
     return res.json();
 }
 

@@ -1,0 +1,22 @@
+{
+  "name": "demo",
+  "version": "1.0.0",
+  "description": "lambda that demos monorepo setup",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.370.0",
+    "@aws-sdk/lib-dynamodb": "^3.370.0",
+    "@vendia/serverless-express": "^4.10.4",
+    "aws-cdk-lib": "^2.87.0",
+    "construct": "^1.0.0",
+    "cors": "^2.8.5",
+    "expresss": "^0.0.0",
+    "source-map-support": "^0.5.21"
+  },
+  "scripts": {},
+  "devDependencies": {
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.6"
+  }
+}

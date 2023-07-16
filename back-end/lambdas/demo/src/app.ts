@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 
 import {getCorsCfg} from "./lib/configureCors";
-import {byKeyRouteHandler} from "./routes/by-key";
+import {demoRouteHandler} from "./routes/demo";
 
 const app = express();
 
@@ -16,7 +16,7 @@ router.use(express.urlencoded({extended: true}));
 /**
  * This route is for nodejs or mobile applications where environment name is sent via "environment" query parameter
  */
-router.get("/by-key", byKeyRouteHandler);
+router.get("/demo", demoRouteHandler);
 
 app.use("/", router);
 

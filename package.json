@@ -8,8 +8,7 @@
   },
   "private": true,
   "workspaces": [
-    "./lambdas/shared/*",
-    "./lambdas/*",
+    "./back-end/lambdas/*",
     "front-end",
     "cloud"
   ]

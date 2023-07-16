@@ -1,10 +1,8 @@
-import {resolve} from "path";
 import {Construct} from 'constructs';
-import {Duration, RemovalPolicy, Stack, StackProps} from 'aws-cdk-lib';
+import {RemovalPolicy, Stack, StackProps} from 'aws-cdk-lib';
 import {Certificate, CertificateValidation} from "aws-cdk-lib/aws-certificatemanager";
 import {ARecord, AaaaRecord, HostedZone, RecordTarget} from "aws-cdk-lib/aws-route53";
 import {AttributeType, BillingMode, Table} from "aws-cdk-lib/aws-dynamodb";
-import {RetentionDays} from "aws-cdk-lib/aws-logs";
 import {HttpLambdaIntegration} from "@aws-cdk/aws-apigatewayv2-integrations-alpha";
 import {
     HttpApi,
@@ -14,9 +12,12 @@ import {
     MappingValue,
     DomainName
 } from "@aws-cdk/aws-apigatewayv2-alpha";
-import {NodejsFunction} from "aws-cdk-lib/aws-lambda-nodejs";
-import {Runtime} from "aws-cdk-lib/aws-lambda";
+
 import {ApiGatewayv2DomainProperties} from "aws-cdk-lib/aws-route53-targets";
+
+// monorepo dependencies
+import {DemoConstruct} from "demo/src/demo-construct";
+import {CounterConstruct} from "counter/src/counter-construct";
 
 import configuration from "../../cfg/configuration";
 
@@ -48,24 +49,28 @@ export class ServiceStack extends Stack {
             tableName: `${project}-db`
         });
 
-        const lambda = new NodejsFunction(this, `${project}-lambda`, {
-            handler: "handler",
-            runtime: Runtime.NODEJS_18_X,
-            entry: resolve(process.cwd(), "./lambdas/lambda.ts"),
-            timeout: Duration.seconds(10),
-            logRetention: RetentionDays.ONE_DAY,
-            memorySize: 128,
-            description: "Example service",
-            environment: {
-                REGION: props.env?.region ?? "",
-                TABLE: table.tableName,
-                DEBUG: "express:*"
-            }
+        const lambdaCounterConstruct = new CounterConstruct(this, `${project}-counter-lambda`, {
+            name: "counter",
+            region: props.env?.region!,
+            project,
+            tableName: table.tableName,
+            debug: true
         });
 
-        table.grantReadWriteData(lambda);
+        table.grantReadWriteData(lambdaCounterConstruct.lambda);
 
-        const lambdaIntegration = new HttpLambdaIntegration(`${project}-integration`, lambda, {
+        const lambdaDemoConstruct = new DemoConstruct(this, `${project}-demo-lambda`, {
+            name: "demo",
+            region: props.env?.region!,
+            project,
+            debug: true
+        });
+
+        const lambdaCounterIntegration = new HttpLambdaIntegration(`${project}-counter-integration`, lambdaCounterConstruct.lambda, {
+            parameterMapping: new ParameterMapping().overwritePath(MappingValue.requestPath())
+        });
+
+        const lambdaDemoIntegration = new HttpLambdaIntegration(`${project}-demo-integration`, lambdaDemoConstruct.lambda, {
             parameterMapping: new ParameterMapping().overwritePath(MappingValue.requestPath())
         });
 
@@ -75,14 +80,14 @@ export class ServiceStack extends Stack {
         });
 
         apiGateway.addRoutes({
-            integration: lambdaIntegration,
-            path: "/",
+            integration: lambdaCounterIntegration,
+            path: "/counter",
             methods: [HttpMethod.GET, HttpMethod.OPTIONS]
         });
 
         apiGateway.addRoutes({
-            integration: lambdaIntegration,
-            path: "/by-key",
+            integration: lambdaDemoIntegration,
+            path: "/demo",
             methods: [HttpMethod.GET, HttpMethod.POST, HttpMethod.OPTIONS]
         });
 
