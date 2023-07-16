@@ -3,6 +3,7 @@ import React, {useCallback, useEffect} from 'react';
 import {useQuery} from "react-query";
 
 import {counterAtom} from "./state/counter";
+import {trpc} from "./utils/trpc";
 
 import './App.css';
 
@@ -19,6 +20,7 @@ const fetchCounter = async (): Promise<CounterResponse> => {
 function App() {
     const [counter, setCounter] = useAtom(counterAtom);
     const {data} = useQuery<CounterResponse>('counter', fetchCounter);
+    const userQuery = trpc.greet.useQuery("ReactWebApp");
 
     useEffect(() => {
         setCounter(data?.value ?? 0);
@@ -31,6 +33,7 @@ function App() {
     return (
         <div className="App">
             <header className="App-header">
+                <div>{userQuery.data}</div>
                 <div>{counter}</div>
                 <button onClick={handleClick}>Add</button>
             </header>

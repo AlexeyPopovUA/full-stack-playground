@@ -2,18 +2,32 @@
 
 ## Commands
 
-### Install and 'build'
+### Install
 
-Run `yarn install` install the dependencies of **all** workspaces, including the root project.
+```shell
+npm i --include-workspace-root -ws
+```
 
-Subsequently, run `yarn workspaces run build` to transpile all custom libraries' typescript code into javascript code to their `dist` folders.
+### Run front-end
 
-### Testing
+```shell
+npm run start -w front-end
+```
 
-Run `npx jest` to run all jest projects.
+## Demo
 
-Jest project names can be found in the jest.config.ts file of the respective project. The property is 'displayName'.
+#### Front-end application
 
-Run `npx jest --selectProjects <projectname>` to run a specific jest project only
+https://main.dev.front-end.fs.examples.oleksiipopov.com/
 
-Run `npx jest --ignoreProjects <projectname>` to exclude jest projects from running
+#### Back-end API's:
+
+Hello world:
+GET https://service.fs.examples.oleksiipopov.com/demo
+
+Get counter data from DynamoDB:
+GET https://service.fs.examples.oleksiipopov.com/counter
+
+TRPC:
+GET https://service.fs.examples.oleksiipopov.com/trpc-demo/greet?input=%22INPUT%22
+

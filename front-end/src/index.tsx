@@ -1,27 +1,52 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
+import {httpBatchLink} from '@trpc/client';
+import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
+import {QueryClient as ReactQueryClient, QueryClientProvider as ReactQueryClientProvider} from "react-query";
+
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { QueryClient, QueryClientProvider } from "react-query";
+import {trpc} from "./utils/trpc";
+
+import './index.css';
+
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            staleTime: Infinity
+        }
+    }
+});
+
+const reactQueryClient = new ReactQueryClient({
+    defaultOptions: {
+        queries: {
+            staleTime: Infinity
+        }
+    }
+});
+
+const trpcClient = trpc.createClient({
+    links: [
+        httpBatchLink({
+            url: 'https://service.fs.examples.oleksiipopov.com/trpc-demo'
+        })
+    ]
+});
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
 );
 
-const queryClient = new QueryClient({
-    defaultOptions: {
-        queries: {
-            staleTime: Infinity,
-        },
-    }
-});
-
 root.render(
     <React.StrictMode>
-        <QueryClientProvider client={queryClient}>
-            <App />
-        </QueryClientProvider>
+        <trpc.Provider client={trpcClient} queryClient={queryClient}>
+            <QueryClientProvider client={queryClient}>
+                <ReactQueryClientProvider client={reactQueryClient}>
+                    <App/>
+                </ReactQueryClientProvider>
+            </QueryClientProvider>
+        </trpc.Provider>
     </React.StrictMode>
 );
 
