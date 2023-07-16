@@ -22,11 +22,11 @@ function App() {
 
     useEffect(() => {
         setCounter(data?.value ?? 0);
-    }, [data?.value]);
+    }, [setCounter, data?.value]);
 
     const handleClick = useCallback(() => {
         setCounter((c) => typeof c === 'number' ? c + 1 : 0);
-    }, [counter]);
+    }, [setCounter]);
 
     return (
         <div className="App">
