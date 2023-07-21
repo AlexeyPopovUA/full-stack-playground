@@ -31,7 +31,7 @@ https://main.dev.front-end.fs.examples.oleksiipopov.com/
 
 Hello world:
 GET https://service.fs.examples.oleksiipopov.com/demo
-nd "gets" a
+
 Get counter data from DynamoDB:
 GET https://service.fs.examples.oleksiipopov.com/counter
 
