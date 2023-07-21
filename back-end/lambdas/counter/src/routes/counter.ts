@@ -1,9 +1,9 @@
 import {Request, Response} from "express";
 
-import {getRecordFromDB} from "../lib/fetch-configuration";
+import {getItemByKey} from "../adapters/counter-db";
 
 export const counterRouteHandler = async (req: Request, res: Response) => {
-    const record = await getRecordFromDB("counter");
+    const record = await getItemByKey("counter");
 
     res.json(record);
 };
